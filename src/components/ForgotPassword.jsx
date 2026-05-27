@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const ForgotPassword = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isLoading, error } = useSelector((s) => s.auth);
+    const { isAuthLoading, error } = useSelector((s) => s.auth);
 
     const [email, setEmail] = useState('');
 
@@ -18,26 +18,40 @@ const ForgotPassword = () => {
                 alert(res?.msg || 'OTP generated! Static OTP is 1234.');
                 navigate('/reset-password', { state: { email } });
             })
-            .catch(() => {});
+            .catch(() => { });
     };
 
     return (
-        <div style={{ maxWidth: 400, margin: '50px auto', padding: 20 }}>
-            <h2>Forgot Password</h2>
-            {error && <div style={{ color: 'red', marginBottom: 12 }}>{error}</div>}
-            <form onSubmit={onSubmit}>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    style={{ width: '100%', padding: 8, marginBottom: 12 }}
-                />
-                <button type="submit" disabled={isLoading} style={{ width: '100%', padding: 10 }}>
-                    {isLoading ? 'Sending...' : 'Send reset link'}
-                </button>
-            </form>
+        <div className="container py-5">
+            <div className="row justify-content-center">
+                <div className="col-12 col-md-5">
+                    <div className="card shadow-sm">
+                        <div className="card-body p-4">
+                            <h2 className="card-title mb-4 text-center">Forgot Password</h2>
+
+                            {error && <div className="alert alert-danger">{error}</div>}
+
+                            <form onSubmit={onSubmit}>
+                                <div className="mb-3">
+                                    <label className="form-label">Email</label>
+                                    <input
+                                        type="email"
+                                        className="form-control"
+                                        placeholder="Enter your email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        required
+                                    />
+                                </div>
+
+                                <button type="submit" className="btn btn-primary w-100" disabled={isAuthLoading}>
+                                    {isAuthLoading ? 'Sending...' : 'Send reset link'}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

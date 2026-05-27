@@ -8,7 +8,7 @@ const ResetPassword = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { isLoading, error } = useSelector((s) => s.auth);
+    const { isAuthLoading, error } = useSelector((s) => s.auth);
 
     const [email, setEmail] = useState(location.state?.email || '');
     const [otp, setOtp] = useState('1234');
@@ -22,43 +22,65 @@ const ResetPassword = () => {
                 alert('Password reset successful');
                 navigate('/login', { replace: true });
             })
-            .catch(() => {});
+            .catch(() => { });
     };
 
     return (
-        <div style={{ maxWidth: 400, margin: '50px auto', padding: 20 }}>
-            <h2>Reset Password</h2>
-            {error && <div style={{ color: 'red', marginBottom: 12 }}>{error}</div>}
-            <form onSubmit={onSubmit}>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    style={{ width: '100%', padding: 8, marginBottom: 12 }}
-                />
-                <input
-                    type="text"
-                    placeholder="OTP"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    required
-                    style={{ width: '100%', padding: 8, marginBottom: 12 }}
-                />
-                <input
-                    type="password"
-                    placeholder="New password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    required
-                    minLength={6}
-                    style={{ width: '100%', padding: 8, marginBottom: 12 }}
-                />
-                <button type="submit" disabled={isLoading} style={{ width: '100%', padding: 10 }}>
-                    {isLoading ? 'Resetting...' : 'Reset password'}
-                </button>
-            </form>
+        <div className="container py-5">
+            <div className="row justify-content-center">
+                <div className="col-12 col-md-5">
+                    <div className="card shadow-sm">
+                        <div className="card-body p-4">
+                            <h2 className="card-title mb-4 text-center">Reset Password</h2>
+
+                            {error && <div className="alert alert-danger">{error}</div>}
+
+                            <form onSubmit={onSubmit}>
+                                <div className="mb-3">
+                                    <label className="form-label">Email</label>
+                                    <input
+                                        type="email"
+                                        className="form-control"
+                                        placeholder="Enter your email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="mb-3">
+                                    <label className="form-label">OTP</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Enter OTP"
+                                        value={otp}
+                                        onChange={(e) => setOtp(e.target.value)}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="mb-3">
+                                    <label className="form-label">New Password</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        placeholder="Enter new password"
+                                        value={newPassword}
+                                        onChange={(e) => setNewPassword(e.target.value)}
+                                        required
+                                        minLength={6}
+                                    />
+                                </div>
+
+                                <button type="submit" className="btn btn-primary w-100" disabled={isAuthLoading}>
+                                    {isAuthLoading ? 'Resetting...' : 'Reset password'}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

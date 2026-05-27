@@ -1,13 +1,14 @@
 import axios from 'axios';
 
+const BASE = import.meta.env.VITE_API_BASE_URL || 'https://backend-auth-gdiz.onrender.com/api';
+
 const api = axios.create({
-  baseURL: 'https://backend-auth-gdiz.onrender.com/api',
+  baseURL: BASE,
   headers: {
     'Content-Type': 'application/json'
   }
 });
 
-// Request interceptor to add token
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -19,17 +20,18 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor to handle 401
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
-      window.location.href = '/login';
     }
     return Promise.reject(error);
   }
 );
+
+
+
 
 export default api;
 

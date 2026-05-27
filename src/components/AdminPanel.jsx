@@ -19,19 +19,42 @@ const AdminPanel = () => {
   }, []);
 
   return (
-    <div style={{ maxWidth: '600px', margin: '50px auto', padding: '20px' }}>
-      <h1>Admin Panel</h1>
-      {user ? (
-        <div>
-          <h2>Welcome admin, {user.name}!</h2>
-          <p>Email: {user.email}</p>
-          <p>Role: {user.role}</p>
-          <hr />
-          <p><strong>Admin Status:</strong> {adminMessage}</p>
+    <div className="container py-5">
+      <div className="row justify-content-center">
+        <div className="col-12 col-lg-8">
+          <div className="card shadow-sm">
+            <div className="card-body p-4">
+              <div className="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                  <h1 className="h3 mb-1">Admin Panel</h1>
+                  <p className="text-muted mb-0">Admin-only controls and details.</p>
+                </div>
+              </div>
+
+              {user ? (
+                <>
+                  <div className="mb-4">
+                    <h2 className="h5">Welcome admin, {user.name}!</h2>
+                    <ul className="list-group list-group-flush mt-3">
+                      <li className="list-group-item">
+                        <strong>Email:</strong> {user.email}
+                      </li>
+                      <li className="list-group-item">
+                        <strong>Role:</strong> {user.role}
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="alert alert-info">
+                    <strong>Admin Status:</strong> {adminMessage}
+                  </div>
+                </>
+              ) : (
+                <div className="alert alert-warning">No user loaded.</div>
+              )}
+            </div>
+          </div>
         </div>
-      ) : (
-        <p>No user loaded.</p>
-      )}
+      </div>
     </div>
   );
 };

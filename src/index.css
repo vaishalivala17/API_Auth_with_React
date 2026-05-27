@@ -1,0 +1,90 @@
+:root {
+    color-scheme: dark;
+}
+
+body {
+    background: radial-gradient(circle at top, rgba(79, 109, 197, 0.16), transparent 35%),
+      radial-gradient(circle at bottom right, rgba(255, 168, 120, 0.14), transparent 30%),
+      #0b1220;
+    color: #e6e8ee;
+    min-height: 100vh;
+}
+
+
+#root {
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: #7aa2ff;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.app-header {
+    background: rgba(15, 23, 47, 0.95);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brand-link {
+    color: #f1f5fb;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.brand-link:hover {
+    color: #fff;
+}
+
+label,
+.form-label,
+.form-control,
+.form-select,
+.list-group-item,
+.card,
+.card-body,
+.alert,
+.text-muted,
+.nav-link,
+.btn,
+.btn-outline-light {
+    color: #e6e8ee !important;
+}
+
+.text-muted {
+    color: #9fb1d1 !important;
+}
+
+.form-control::placeholder,
+.form-select::placeholder,
+textarea::placeholder {
+    color: #9ba7c4 !important;
+    opacity: 1;
+}
+
+.list-group-item {
+    background-color: #0d1329 !important;
+    color: #e6e8ee !important;
+}
+
+.card,
+.form-control,
+.form-select,
+.alert {
+    background-color: #101a2e;
+    color: #e6e8ee;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.btn {
+    background-color: #203152;
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #e6e8ee;
+}
+
+.btn:hover {
+    background-color: #273c62;
+}

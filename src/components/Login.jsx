@@ -8,9 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, error, isAuthenticated, user } = useSelector((state) => state.auth);
-
-
+  const { isAuthLoading, error, isAuthenticated, user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -20,7 +18,7 @@ const Login = () => {
     return () => {
       dispatch(clearError());
     };
-  }, [isAuthenticated, navigate, dispatch]);
+  }, [isAuthenticated, navigate, dispatch, user]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,38 +26,55 @@ const Login = () => {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px' }}>
-      <h2>Login</h2>
-      {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
-      <form onSubmit={handleSubmit}>
+    <div className="container py-5">
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-6">
+          <div className="card shadow-sm">
+            <div className="card-body p-4">
+              <h2 className="card-title mb-4 text-center">Login</h2>
 
-        <div style={{ marginBottom: '10px' }}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ width: '100%', padding: '8px' }}
-          />
+              {error && <div className="alert alert-danger">{error}</div>}
+
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label className="form-label">Email</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">Password</label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <button type="submit" className="btn btn-primary w-100" disabled={isAuthLoading}>
+                  {isAuthLoading ? 'Logging in...' : 'Login'}
+                </button>
+              </form>
+
+              <div className="mt-3 text-center">
+                <Link to="/forgot-password">Forgot password?</Link>
+              </div>
+              <div className="mt-3 text-center">
+                Don't have an account? <Link to="/signup">Sign up</Link>
+              </div>
+            </div>
+          </div>
         </div>
-        <div style={{ marginBottom: '10px' }}>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{ width: '100%', padding: '8px' }}
-          />
-        </div>
-        <button type="submit" disabled={isLoading} style={{ width: '100%', padding: '10px' }}>
-          {isLoading ? 'Logging in...' : 'Login'}
-        </button>
-      </form>
-      <p style={{ textAlign: 'center', marginTop: '10px' }}>
-        Don't have an account? <Link to="/signup">Sign up</Link>
-      </p>
+      </div>
     </div>
   );
 };

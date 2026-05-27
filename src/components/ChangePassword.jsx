@@ -4,42 +4,68 @@ import { changePassword } from '../store/authSlice';
 
 const ChangePassword = () => {
     const dispatch = useDispatch();
-    const { isLoading, error } = useSelector((s) => s.auth);
+    const { isAuthLoading, error } = useSelector((s) => s.auth);
+    const [successMessage, setSuccessMessage] = useState('');
 
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
 
     const onSubmit = (e) => {
         e.preventDefault();
-        dispatch(changePassword({ oldPassword, newPassword }));
+        setSuccessMessage('');
+        dispatch(changePassword({ oldPassword, newPassword }))
+            .unwrap()
+            .then((res) => {
+                setSuccessMessage(res?.msg || 'Password changed successfully.');
+            })
+            .catch(() => {});
     };
 
     return (
-        <div style={{ maxWidth: 420, margin: '50px auto', padding: 20 }}>
-            <h2>Change Password</h2>
-            {error && <div style={{ color: 'red', marginBottom: 12 }}>{error}</div>}
-            <form onSubmit={onSubmit}>
-                <input
-                    type="password"
-                    placeholder="Current password"
-                    value={oldPassword}
-                    onChange={(e) => setOldPassword(e.target.value)}
-                    required
-                    style={{ width: '100%', padding: 8, marginBottom: 12 }}
-                />
-                <input
-                    type="password"
-                    placeholder="New password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    required
-                    minLength={6}
-                    style={{ width: '100%', padding: 8, marginBottom: 12 }}
-                />
-                <button type="submit" disabled={isLoading} style={{ width: '100%', padding: 10 }}>
-                    {isLoading ? 'Updating...' : 'Change password'}
-                </button>
-            </form>
+        <div className="container py-5">
+            <div className="row justify-content-center">
+                <div className="col-12 col-md-5">
+                    <div className="card shadow-sm">
+                        <div className="card-body p-4">
+                            <h2 className="card-title mb-4 text-center">Change Password</h2>
+
+                            {error && <div className="alert alert-danger">{error}</div>}
+                            {successMessage && <div className="alert alert-success">{successMessage}</div>}
+
+                            <form onSubmit={onSubmit}>
+                                <div className="mb-3">
+                                    <label className="form-label">Current Password</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        placeholder="Enter current password"
+                                        value={oldPassword}
+                                        onChange={(e) => setOldPassword(e.target.value)}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="mb-3">
+                                    <label className="form-label">New Password</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        placeholder="Enter new password"
+                                        value={newPassword}
+                                        onChange={(e) => setNewPassword(e.target.value)}
+                                        required
+                                        minLength={6}
+                                    />
+                                </div>
+
+                                <button type="submit" className="btn btn-primary w-100" disabled={isAuthLoading}>
+                                    {isAuthLoading ? 'Updating...' : 'Change password'}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

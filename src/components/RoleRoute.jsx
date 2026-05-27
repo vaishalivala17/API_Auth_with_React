@@ -1,18 +1,24 @@
+import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { getMe } from '../store/authSlice';
 
 const RoleRoute = ({ children, allowedRoles = [] }) => {
-  const { isAuthenticated, isLoading, user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { token, isMeLoading, user } = useSelector((state) => state.auth);
+  const hasToken = Boolean(token);
 
-  if (isLoading) return <div>Loading...</div>;
+  useEffect(() => {
+    if (hasToken && !user && !isMeLoading) {
+      dispatch(getMe());
+    }
+  }, [dispatch, hasToken, user, isMeLoading]);
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
+  if (isMeLoading) return <div>Loading...</div>;
+  if (!hasToken) return <Navigate to="/login" replace />;
 
   const role = user?.role;
-
-  if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
+  if (allowedRoles.length > 0 && user && !allowedRoles.includes(role)) {
     return <Navigate to="/dashboard" replace />;
   }
 
@@ -20,4 +26,5 @@ const RoleRoute = ({ children, allowedRoles = [] }) => {
 };
 
 export default RoleRoute;
+
 
