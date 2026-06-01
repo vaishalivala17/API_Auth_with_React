@@ -31,13 +31,6 @@ export const register = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const response = await api.post('/auth/register', userData);
-
-      const token = normalizeToken(response.data);
-      const user = normalizeUser(response.data);
-
-      if (token) localStorage.setItem('token', token);
-      if (user) localStorage.setItem('user', JSON.stringify(user));
-
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || { message: 'Registration failed' });
@@ -139,17 +132,9 @@ const authSlice = createSlice({
         state.isAuthLoading = true;
         state.error = null;
       })
-      .addCase(register.fulfilled, (state, action) => {
+      .addCase(register.fulfilled, (state) => {
         state.isAuthLoading = false;
         state.error = null;
-
-        const payload = action.payload || {};
-        const token = normalizeToken(payload);
-        const user = normalizeUser(payload);
-
-        if (token) state.token = token;
-        state.user = user;
-        state.isAuthenticated = Boolean(token || state.token);
       })
       .addCase(register.rejected, (state, action) => {
         state.isAuthLoading = false;

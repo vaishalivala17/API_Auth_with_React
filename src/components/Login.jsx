@@ -60,7 +60,7 @@ const Login = () => {
                   />
                 </div>
 
-                <button type="submit" className="btn btn-primary w-100" disabled={isAuthLoading}>
+                <button type="submit" className="btn btn-secondary text-dark w-100" disabled={isAuthLoading}>
                   {isAuthLoading ? 'Logging in...' : 'Login'}
                 </button>
               </form>

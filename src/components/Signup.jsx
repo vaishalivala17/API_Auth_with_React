@@ -8,6 +8,7 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('user');
+  const [successMessage, setSuccessMessage] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuthLoading, error, isAuthenticated } = useSelector((state) => state.auth);
@@ -21,9 +22,21 @@ const Signup = () => {
     };
   }, [isAuthenticated, navigate, dispatch]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(register({ name, email, password, role }));
+    try {
+      await dispatch(register({ name, email, password, role })).unwrap();
+      setSuccessMessage('Registration successful! Redirecting to login page...');
+      setName('');
+      setEmail('');
+      setPassword('');
+      setRole('user');
+      setTimeout(() => {
+        navigate('/login');
+      }, 1800);
+    } catch (err) {
+      setSuccessMessage('');
+    }
   };
 
   return (
@@ -35,6 +48,7 @@ const Signup = () => {
               <h2 className="card-title mb-4 text-center">Sign Up</h2>
 
               {error && <div className="alert alert-danger">{error}</div>}
+              {successMessage && <div className="alert alert-success">{successMessage}</div>}
 
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
@@ -86,7 +100,7 @@ const Signup = () => {
                   </select>
                 </div>
 
-                <button type="submit" className="btn btn-primary w-100" disabled={isAuthLoading}>
+                <button type="submit" className="btn btn-secondary text-dark w-100" disabled={isAuthLoading}>
                   {isAuthLoading ? 'Signing up...' : 'Sign Up'}
                 </button>
               </form>
